@@ -338,16 +338,21 @@ class EquipmentController extends Controller
     public function actionCreate()
     {
         $model = new Equipment();
+		
+		if (Yii::$app->request->isAjax) {
+			$equipment_id = Yii::$app->request->get('equipment_id');
+		}
 
 		if ($model->load(Yii::$app->request->post())) {
 			if ( !$model->sort ){
 				$model->sort = 100;
 			}
 			$model->save();
-            return $this->redirect(['view', 'id' => $model->equipment_id]);
+            return $this->redirect(['index', 'equipment_id' => $model->equipment_id]);
         } else {
-            return $this->render('create', [
+            return $this->renderPartial('create', [
                 'model' => $model,
+				'type' => $equipment_id
             ]);
         }
     }
@@ -414,11 +419,11 @@ class EquipmentController extends Controller
      * @param integer $id
      * @return mixed
      */
-    public function actionDelete($id)
+    public function actionDelete($id, $equipment_id)
     {
         $this->findModel($id)->delete();
 
-        return $this->redirect(['index']);
+        return $this->redirect(['index', 'equipment_id' => $equipment_id]);
     }
 
     /**

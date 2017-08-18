@@ -41,14 +41,12 @@ $this->params['breadcrumbs'][] = $this->title;
 										]); 
 									?>	
 
-						<?=Html::a('<span class="glyphicon glyphicon-trash"></span>', '/equipment/createcategory?equipment_id='.$_GET['equipment_id'], [
+						<?=Html::a('<span class="glyphicon glyphicon-trash"></span>', '/equipment/delete?id='.$_GET['equipment_id'], [
 											'id' => 'activity-view-link',
 											'title' => 'Удалить категорию', 
-											'data-toggle' => 'modal',
-											'data-target' => '#ModalForm',
-											'data-id' => $key,
-											'data-type' => 'post',
-											'data-remote' => ['createcategory'],
+											'data-confirm' => Yii::t('yii', 'Вы уверены, что хотите удалить категорию?'),
+											'data-method' => 'post',
+											'data-pjax' => '1',
 											'data-equipment_id' => $_GET['equipment_id']
 
 										]); 
@@ -110,12 +108,33 @@ $this->params['breadcrumbs'][] = $this->title;
 
 									]);
 								},
+								'delete' => function ($url, $model, $key) {
+									$url .= '&equipment_id=' . $_GET['equipment_id'];
+									return Html::a('<span class="glyphicon glyphicon-trash"></span>', $url, [
+										'title' => Yii::t('yii', 'Delete'),
+										'data-confirm' => Yii::t('yii', 'Are you sure you want to delete this item?'),
+										'data-pjax' => '#dataTable', 
+									]);
+								},
 							],
 							],
 						],
 					]); ?>
 					    <p>
-						<?= Html::a('Добавить товар', ['create'], ['class' => 'btn btn-success']) ?>
+
+						<?=Html::a('Добавить товар', '/equipment/create?equipment_id='.$_GET['equipment_id'], [
+											'id' => 'activity-view-link',
+											'class' => 'btn btn-success',
+											'title' => 'Добавить товар', 
+											'data-toggle' => 'modal',
+											'data-target' => '#ModalForm',
+											'data-id' => $key,
+											'data-type' => 'post',
+											'data-remote' => ['createcategory'],
+											'data-equipment_id' => $_GET['equipment_id']
+
+										]); 
+									?>
 					</p>
 				
 			  

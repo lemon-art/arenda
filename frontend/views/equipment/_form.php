@@ -8,9 +8,13 @@ use yii\widgets\ActiveForm;
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
+<?
+if ( $type ){
+	$model -> type = $type;
+}
+?>
 
-
-<div class="equipment-form">
+<div class="card-block">
 
     <?php $form = ActiveForm::begin(); ?>
 
