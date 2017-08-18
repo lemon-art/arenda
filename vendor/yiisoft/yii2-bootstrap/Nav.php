@@ -120,7 +120,7 @@ class Nav extends Widget
             $this->params = Yii::$app->request->getQueryParams();
         }
         if ($this->dropDownCaret === null) {
-            $this->dropDownCaret = Html::tag('b', '', ['class' => 'caret']);
+            $this->dropDownCaret = Html::tag('i', '', ['class' => '']);
         }
         Html::addCssClass($this->options, ['widget' => 'nav']);
     }
@@ -168,9 +168,14 @@ class Nav extends Widget
         $label = $encodeLabel ? Html::encode($item['label']) : $item['label'];
         $options = ArrayHelper::getValue($item, 'options', []);
         $items = ArrayHelper::getValue($item, 'items');
+		$icon = ArrayHelper::getValue($item, 'icon');
         $url = ArrayHelper::getValue($item, 'url', '#');
         $linkOptions = ArrayHelper::getValue($item, 'linkOptions', []);
 
+		if ( $icon[0] ){
+			$label = '<i class="' . $icon[0] . '"></i>' . $label;
+		}
+		
         if (isset($item['active'])) {
             $active = ArrayHelper::remove($item, 'active', false);
         } else {
@@ -180,9 +185,9 @@ class Nav extends Widget
         if (empty($items)) {
             $items = '';
         } else {
-            $linkOptions['data-toggle'] = 'dropdown';
-            Html::addCssClass($options, ['widget' => 'dropdown']);
-            Html::addCssClass($linkOptions, ['widget' => 'dropdown-toggle']);
+            $linkOptions['data-toggle'] = '';
+            Html::addCssClass($options, ['widget' => 'nav-dropdown']);
+            Html::addCssClass($linkOptions, ['widget' => 'nav-dropdown-toggle']);
             if ($this->dropDownCaret !== '') {
                 $label .= ' ' . $this->dropDownCaret;
             }
@@ -198,7 +203,12 @@ class Nav extends Widget
             Html::addCssClass($options, 'active');
         }
 
-        return Html::tag('li', Html::a($label, $url, $linkOptions) . $items, $options);
+		if ( is_array($url) ) {
+			return Html::tag('li', Html::a($label, $url, $linkOptions) . $items, $options);
+		}
+		else {
+			return Html::tag('li', $label, $options);
+		}
     }
 
     /**

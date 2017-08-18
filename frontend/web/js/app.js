@@ -56,6 +56,7 @@ $(document).ready(function($){
     if ($(this).hasClass('nav-dropdown-toggle')) {
       $(this).parent().toggleClass('open');
       resizeBroadcast();
+		return false;
     }
 
   });

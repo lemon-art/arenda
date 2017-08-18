@@ -10,6 +10,7 @@ use yii\widgets\Menu;
 use yii\widgets\Breadcrumbs;
 use frontend\assets\AppAsset;
 use common\widgets\Alert;
+use app\models\Storage;
 
 AppAsset::register($this);
 ?>
@@ -35,56 +36,32 @@ AppAsset::register($this);
             </li>
 
             <li class="nav-item px-1">
-                <a class="nav-link" href="#">Dashboard</a>
+                <a class="nav-link" href="/user/admin/">Пользователи</a>
+            </li>
+			<li class="nav-item px-1">
+                <a class="nav-link" href="/storage/">Склады</a>
             </li>
             <li class="nav-item px-1">
-                <a class="nav-link" href="#">Users</a>
-            </li>
-            <li class="nav-item px-1">
-                <a class="nav-link" href="#">Settings</a>
+                <a class="nav-link" href="/user/rbac">Настройки</a>
             </li>
         </ul>
+
         <ul class="nav navbar-nav ml-auto">
-            <li class="nav-item hidden-md-down">
-                <a class="nav-link" href="#"><i class="icon-bell"></i><span class="badge badge-pill badge-danger">5</span></a>
-            </li>
-            <li class="nav-item hidden-md-down">
-                <a class="nav-link" href="#"><i class="icon-list"></i></a>
-            </li>
-            <li class="nav-item hidden-md-down">
-                <a class="nav-link" href="#"><i class="icon-location-pin"></i></a>
-            </li>
+
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle nav-link" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
                     <img src="img/avatars/6.jpg" class="img-avatar" alt="admin@bootstrapmaster.com">
-                    <span class="hidden-md-down">admin</span>
+                    <span class="hidden-md-down"><?=Yii::$app->user->identity->username;?></span>
                 </a>
                 <div class="dropdown-menu dropdown-menu-right">
 
-                    <div class="dropdown-header text-center">
-                        <strong>Account</strong>
-                    </div>
-
-                    <a class="dropdown-item" href="#"><i class="fa fa-bell-o"></i> Updates<span class="badge badge-info">42</span></a>
-                    <a class="dropdown-item" href="#"><i class="fa fa-envelope-o"></i> Messages<span class="badge badge-success">42</span></a>
-                    <a class="dropdown-item" href="#"><i class="fa fa-tasks"></i> Tasks<span class="badge badge-danger">42</span></a>
-                    <a class="dropdown-item" href="#"><i class="fa fa-comments"></i> Comments<span class="badge badge-warning">42</span></a>
-
-                    <div class="dropdown-header text-center">
-                        <strong>Settings</strong>
-                    </div>
-
-                    <a class="dropdown-item" href="#"><i class="fa fa-user"></i> Profile</a>
-                    <a class="dropdown-item" href="#"><i class="fa fa-wrench"></i> Settings</a>
-                    <a class="dropdown-item" href="#"><i class="fa fa-usd"></i> Payments<span class="badge badge-default">42</span></a>
-                    <a class="dropdown-item" href="#"><i class="fa fa-file"></i> Projects<span class="badge badge-primary">42</span></a>
-                    <div class="divider"></div>
-                    <a class="dropdown-item" href="#"><i class="fa fa-shield"></i> Lock Account</a>
-                    <a class="dropdown-item" href="#"><i class="fa fa-lock"></i> Logout</a>
+                   
+                    <a class="dropdown-item" href="/profile"><i class="fa fa-user"></i>Профиль</a>
+                    <a class="dropdown-item" href="/logout"><i class="fa fa-lock"></i> Выход</a>
                 </div>
             </li>
             <li class="nav-item hidden-md-down">
-                <a class="nav-link navbar-toggler aside-menu-toggler" href="#">☰</a>
+                
             </li>
 
         </ul>
@@ -99,10 +76,21 @@ AppAsset::register($this);
 			<nav class="sidebar-nav">
 				<?
 				$menuItems = [
-
-					['label' => 'Home', 'url' => ['/'], 'options' => ['class' => 'nav-item'], 'linkOptions' => ['class' => 'nav-link']],
-					['label' => 'Склады', 'url' => ['/storage/'], 'options' => ['class' => 'nav-item'], 'linkOptions' => ['class' => 'nav-link']],
-					['label' => 'Товары', 'url' => ['/equipment/'], 'options' => ['class' => 'nav-item'], 'linkOptions' => ['class' => 'nav-link']]
+					['label' => 'Новый заказ', 'url' => ['/orders/create/'], 'icon' => ['fa fa-plus fa-lg m-t-2'], 'options' => ['class' => 'nav-item'], 'linkOptions' => ['class' => 'nav-link']],
+					['label' => 'Заказы', 'options' => ['class' => 'nav-title'], 'linkOptions' => ['class' => 'nav-link']],
+						['label' => 'Действующие', 'icon' => ['fa fa-play-circle fa-lg m-t-2'], 'url' => ['/orders/'], 'options' => ['class' => 'nav-item'], 'linkOptions' => ['class' => 'nav-link']],
+						['label' => 'Просроченые', 'icon' => ['fa fa-ban fa-lg m-t-2'], 'url' => ['/orders/expired/'], 'options' => ['class' => 'nav-item'], 'linkOptions' => ['class' => 'nav-link']],
+						['label' => 'Архив заказов', 'icon' => ['fa fa-trash fa-lg m-t-2'], 'url' => ['/orders/archive/'], 'options' => ['class' => 'nav-item'], 'linkOptions' => ['class' => 'nav-link']],
+					['label' => 'Оплаты', 'options' => ['class' => 'nav-title'], 'linkOptions' => ['class' => 'nav-link']],
+						['label' => 'Добавить оплату', 'icon' => ['fa fa-plus-circle fa-lg m-t-2'], 'url' => ['/payment/'], 'options' => ['class' => 'nav-item'], 'linkOptions' => ['class' => 'nav-link']],
+						['label' => 'Список оплат', 'icon' => ['fa fa-rub fa-lg m-t-2'], 'url' => ['/payment/'], 'options' => ['class' => 'nav-item'], 'linkOptions' => ['class' => 'nav-link']],
+					['label' => 'Клиенты', 'options' => ['class' => 'nav-title'], 'linkOptions' => ['class' => 'nav-link']],
+						['label' => 'Добавить клиента', 'icon' => ['fa fa-user-plus fa-lg m-t-2'], 'url' => ['/clients/'], 'options' => ['class' => 'nav-item'], 'linkOptions' => ['class' => 'nav-link']],
+						['label' => 'Физ. лица', 'icon' => ['fa fa-user fa-lg m-t-2'], 'url' => ['/clients/'], 'options' => ['class' => 'nav-item'], 'linkOptions' => ['class' => 'nav-link']],
+						['label' => 'Юр. лица', 'icon' => ['fa fa-user-secret fa-lg m-t-2'], 'url' => ['/clients/'], 'options' => ['class' => 'nav-item'], 'linkOptions' => ['class' => 'nav-link']],
+					['label' => 'Склады', 'url' => ['/storage/'], 'options' => ['class' => 'nav-item'], 'linkOptions' => ['class' => 'nav-link'], 'items' => Storage::GetStorageList()],
+					['label' => 'Товары', 'url' => ['/equipment/'], 'options' => ['class' => 'nav-item'], 'linkOptions' => ['class' => 'nav-link']],
+					
 				];
 				echo Nav::widget([
 					'options' => ['class' => 'nav'],
@@ -131,7 +119,7 @@ AppAsset::register($this);
 		    </div>
 
     <footer class="app-footer">
-        <a href="http://coreui.io">CoreUI</a> © 2017 creativeLabs.
+        <a href="">Аренда 2.0</a> © 2017
         <span class="float-right"></a>
         </span>
     </footer>

@@ -20,6 +20,22 @@ return [
                 ],
             ],
         ],
+		'user' => [
+			'class' => 'yii\web\User',
+			'identityClass' => 'budyaga\users\models\User',
+			'enableAutoLogin' => true,
+			'loginUrl' => ['/login'],
+		],
+		'authClientCollection' => [
+			'class' => 'yii\authclient\Collection',
+		]
     ],
     'params' => $params,
+	'modules' => [
+		'user' => [
+			'class' => 'budyaga\users\Module',
+			'userPhotoUrl' => 'http://example.com/uploads/user/photo',
+			'userPhotoPath' => '@frontend/web/uploads/user/photo'
+		],
+	],
 ];

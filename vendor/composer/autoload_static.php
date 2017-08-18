@@ -15,18 +15,31 @@ class ComposerStaticInitc506dafb6041b6f89d6035a99ee1f414
         'y' => 
         array (
             'yii\\swiftmailer\\' => 16,
+            'yii\\jui\\' => 8,
+            'yii\\imagine\\' => 12,
+            'yii\\httpclient\\' => 15,
             'yii\\gii\\' => 8,
             'yii\\faker\\' => 10,
             'yii\\debug\\' => 10,
             'yii\\composer\\' => 13,
             'yii\\codeception\\' => 16,
             'yii\\bootstrap\\' => 14,
+            'yii\\authclient\\' => 15,
             'yii\\' => 4,
+        ),
+        'd' => 
+        array (
+            'developeruz\\behaviors\\' => 22,
         ),
         'c' => 
         array (
             'creocoder\\nestedsets\\' => 21,
             'cebe\\markdown\\' => 14,
+        ),
+        'b' => 
+        array (
+            'budyaga\\users\\' => 14,
+            'budyaga\\cropper\\' => 16,
         ),
         'F' => 
         array (
@@ -38,6 +51,18 @@ class ComposerStaticInitc506dafb6041b6f89d6035a99ee1f414
         'yii\\swiftmailer\\' => 
         array (
             0 => __DIR__ . '/..' . '/yiisoft/yii2-swiftmailer',
+        ),
+        'yii\\jui\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/yiisoft/yii2-jui',
+        ),
+        'yii\\imagine\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/yiisoft/yii2-imagine',
+        ),
+        'yii\\httpclient\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/yiisoft/yii2-httpclient',
         ),
         'yii\\gii\\' => 
         array (
@@ -63,9 +88,17 @@ class ComposerStaticInitc506dafb6041b6f89d6035a99ee1f414
         array (
             0 => __DIR__ . '/..' . '/yiisoft/yii2-bootstrap',
         ),
+        'yii\\authclient\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/yiisoft/yii2-authclient',
+        ),
         'yii\\' => 
         array (
             0 => __DIR__ . '/..' . '/yiisoft/yii2',
+        ),
+        'developeruz\\behaviors\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/developeruz/yii-behaviors',
         ),
         'creocoder\\nestedsets\\' => 
         array (
@@ -75,6 +108,14 @@ class ComposerStaticInitc506dafb6041b6f89d6035a99ee1f414
         array (
             0 => __DIR__ . '/..' . '/cebe/markdown',
         ),
+        'budyaga\\users\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/budyaga/yii2-users',
+        ),
+        'budyaga\\cropper\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/budyaga/yii2-cropper',
+        ),
         'Faker\\' => 
         array (
             0 => __DIR__ . '/..' . '/fzaninotto/faker/src/Faker',
@@ -82,6 +123,13 @@ class ComposerStaticInitc506dafb6041b6f89d6035a99ee1f414
     );
 
     public static $prefixesPsr0 = array (
+        'I' => 
+        array (
+            'Imagine' => 
+            array (
+                0 => __DIR__ . '/..' . '/imagine/imagine/lib',
+            ),
+        ),
         'H' => 
         array (
             'HTMLPurifier' => 

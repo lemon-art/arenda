@@ -43,7 +43,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
 						<?=Html::a('<span class="glyphicon glyphicon-trash"></span>', '/equipment/createcategory?equipment_id='.$_GET['equipment_id'], [
 											'id' => 'activity-view-link',
-											'title' => 'Добавить категорию', 
+											'title' => 'Удалить категорию', 
 											'data-toggle' => 'modal',
 											'data-target' => '#ModalForm',
 											'data-id' => $key,
@@ -92,6 +92,7 @@ $this->params['breadcrumbs'][] = $this->title;
 							'name',
 							'arenda',
 							'price',
+							'weight',
 
 							[
 							'class' => 'yii\grid\ActionColumn',
@@ -114,7 +115,7 @@ $this->params['breadcrumbs'][] = $this->title;
 						],
 					]); ?>
 					    <p>
-						<?= Html::a('Create Equipment', ['create'], ['class' => 'btn btn-success']) ?>
+						<?= Html::a('Добавить товар', ['create'], ['class' => 'btn btn-success']) ?>
 					</p>
 				
 			  

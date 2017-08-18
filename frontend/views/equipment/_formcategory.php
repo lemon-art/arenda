@@ -20,11 +20,15 @@ if ( $type ){
     <?php $form = ActiveForm::begin(); ?>
 
     <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
+	
+	<?= $form->field($model, 'sort')->textInput(['maxlength' => true]) ?>
 
 	<?= $form->field($model, 'type')->dropDownList($model->GetDropdownSections());?>
 
 	<?= $form->field($model, 'section')->hiddenInput(array('value'=>'1')); ?>
+	
 
+	
     <div class="form-group">
         <?= Html::submitButton($model->isNewRecord ? 'Добавить' : 'Сохранить', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
     </div>

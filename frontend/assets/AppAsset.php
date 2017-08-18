@@ -19,10 +19,14 @@ class AppAsset extends AssetBundle
     ];
     public $js = [
 		'js/jQuery.tree.js',
+		'js/tether.min.js',
 		'js/main.js',
 		'js/app.js',
-		'Chart.min.js',
-		'js/views/main.js'
+		'js/Chart.min.js',
+		'js/pace.min.js',
+		'js/views/main.js',
+		'js/widgets.js'
+		
     ];
     public $depends = [
         'yii\web\YiiAsset',

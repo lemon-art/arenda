@@ -4,12 +4,15 @@ namespace frontend\controllers;
 
 use Yii;
 use app\models\Equipment;
+use app\models\Storage;
+use app\models\StorageConsist;
 use yii\data\ActiveDataProvider;
 use yii\helpers\ArrayHelper;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use creocoder\nestedsets\NestedSetsBehavior;
+use yii\filters\AccessControl;
 
 /**
  * EquipmentController implements the CRUD actions for Equipment model.
@@ -22,10 +25,24 @@ class EquipmentController extends Controller
     public function behaviors()
     {
         return [
+            'access' => [
+                'class' => AccessControl::className(),
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'roles' => ['@']
+                    ],
+                    [
+                        'actions' => ['logout'],
+                        'allow' => true,
+                        'roles' => ['@'],
+                    ],
+                ],
+            ],
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
-                    'delete' => ['POST'],
+                    'logout' => ['post'],
                 ],
             ],
         ];
@@ -38,13 +55,13 @@ class EquipmentController extends Controller
     public function actionIndex()
     {
 		$model = new Equipment();
-		$arSections = Equipment::find()->asArray()->where(['section' => 1])->all(); 
+		$arSections = Equipment::find()->asArray()->where(['section' => 1])->orderBy(['sort' => SORT_ASC])->all(); 
 		$title = "Товары";
 		
 		if(isset($_GET['equipment_id'])){
 		
 			$dataProvider = new ActiveDataProvider([
-				'query' => Equipment::find()->where(['type' => $_GET['equipment_id']])->andWhere(['section' => 0]),
+				'query' => Equipment::find()->where(['type' => $_GET['equipment_id']])->andWhere(['section' => 0])->orderBy(['sort' => SORT_ASC])
 			]);
 			$title = $this->findModel($_GET['equipment_id'])->name;
 		}
@@ -82,6 +99,236 @@ class EquipmentController extends Controller
             'model' => $this->findModel($id),
         ]);
     }
+	
+	public function actionStorage($id)
+    {
+	
+		$model = new Equipment();
+		$idStorage  	= $_GET['id'];
+		$arStorage  	= Storage::find()->asArray()->where(['storage_id' => $idStorage])->all(); 
+
+		
+		if ( count ( $arStorage[0] ) > 0){
+			$storeName = $arStorage[0]['name'];
+			$storeID   = $arStorage[0]['storage_id'];
+			
+			// получаем структуру товаров
+			$arSections 	= Equipment::find()->asArray()->where(['section' => 1])->all(); 
+			
+			// получаем данные о наличии
+			$arConsistBD	 	= StorageConsist::find()->asArray()->where(['storage_id' => $idStorage])->all(); 
+			
+			//обрабатываем данные о наличии
+			$arConsist = Array();
+			foreach ( $arConsistBD as $arConsistData ){
+				$arConsist[$arConsistData["equipment_id"]] = $arConsistData;
+			}
+			
+			if(isset($_GET['equipment_id'])){
+			
+				$dataProvider = new ActiveDataProvider([
+					'query' => Equipment::find()->where(['type' => $_GET['equipment_id']])->andWhere(['section' => 0]),
+				]);
+				$title = $this->findModel($_GET['equipment_id'])->name;
+			}
+			else {
+				$dataProvider = new ActiveDataProvider([
+					'query' => Equipment::find()->where(['section' => 0]),
+				]);
+			}
+			
+				
+				if (Yii::$app->request->isAjax) {
+					return $this->renderAjax('storage', [
+						'dataProvider'  => $dataProvider,
+						'arSections' 	=> $model->get_tree( $arSections, 0 ),
+						'storeName' 	=> $storeName,
+						'storeID' 		=> $storeID,
+						'arConsist' 	=> $arConsist,
+					]);
+				}
+				else {
+					return $this->render('storage', [
+						'dataProvider'	=> $dataProvider,
+						'arSections' 	=> $model->get_tree( $arSections, 0 ),
+						'storeName' 	=> $storeName,
+						'storeID' 		=> $storeID,
+						'arConsist' 	=> $arConsist,
+					]);
+				}
+			
+		}
+		else {
+				$dataProvider = new ActiveDataProvider([
+					'query' => Equipment::find()->where(['section' => 0]),
+				]);
+			return $this->render('error_storage', [
+					'dataProvider' => $dataProvider
+			]);
+		
+		}
+    }
+	
+	
+	public function actionStorageset($id) 
+    {
+	
+		$model = new Equipment();
+		$idStorage  	= $_GET['id'];
+		$arStorage  	= Storage::find()->asArray()->where(['storage_id' => $idStorage])->all(); 
+
+		
+		if ( count ( $arStorage[0] ) > 0){
+			$storeName = $arStorage[0]['name'];
+			$storeID   = $arStorage[0]['storage_id'];
+			
+			// получаем структуру товаров
+			$arSections 	= Equipment::find()->asArray()->where(['section' => 1])->all(); 
+			
+			// получаем данные о наличии
+			$arConsistBD	 	= StorageConsist::find()->asArray()->where(['storage_id' => $idStorage])->all(); 
+			
+			//обрабатываем данные о наличии
+			$arConsist = Array();
+			foreach ( $arConsistBD as $arConsistData ){
+				$arConsist[$arConsistData["equipment_id"]] = $arConsistData;
+			}
+			
+			if(isset($_GET['equipment_id'])){
+			
+				$dataProvider = new ActiveDataProvider([
+					'query' => Equipment::find()->where(['type' => $_GET['equipment_id']])->andWhere(['section' => 0]),
+				]);
+				$title = $this->findModel($_GET['equipment_id'])->name;
+			}
+			else {
+				$dataProvider = new ActiveDataProvider([
+					'query' => Equipment::find()->where(['section' => 0]),
+				]);
+			}
+			
+				
+				if (Yii::$app->request->isAjax) {
+					return $this->renderAjax('storageset', [
+						'dataProvider'  => $dataProvider,
+						'arSections' 	=> $model->get_tree( $arSections, 0 ),
+						'storeName' 	=> $storeName,
+						'storeID' 		=> $storeID,
+						'arConsist' 	=> $arConsist,
+					]);
+				}
+				else {
+					return $this->renderPartial('storageset', [
+						'dataProvider'	=> $dataProvider,
+						'arSections' 	=> $model->get_tree( $arSections, 0 ),
+						'storeName' 	=> $storeName,
+						'storeID' 		=> $storeID,
+						'arConsist' 	=> $arConsist,
+					]);
+				}
+			
+		}
+		else {
+				$dataProvider = new ActiveDataProvider([
+					'query' => Equipment::find()->where(['section' => 0]),
+				]);
+			return $this->render('error_storage', [
+					'dataProvider' => $dataProvider
+			]);
+		
+		}
+    }
+	
+	
+	public function actionStoragesetcat($id) 
+    {
+	
+		$model = new Equipment();
+		$idStorage  	= $_GET['id'];
+		$arStorage  	= Storage::find()->asArray()->where(['storage_id' => $idStorage])->all(); 
+
+		
+		if ( count ( $arStorage[0] ) > 0){
+			$storeName = $arStorage[0]['name'];
+			$storeID   = $arStorage[0]['storage_id'];
+			
+			// получаем структуру товаров
+			$arSections 	= Equipment::find()->asArray()->where(['section' => 1])->all(); 
+			
+			// получаем данные о наличии
+			$arConsistBD	 	= StorageConsist::find()->asArray()->where(['storage_id' => $idStorage])->all(); 
+			
+			//обрабатываем данные о наличии
+			$arConsist = Array();
+			foreach ( $arConsistBD as $arConsistData ){
+				$arConsist[$arConsistData["equipment_id"]] = $arConsistData;
+			}
+			
+			if(isset($_GET['equipment_id'])){
+			
+				$dataProvider = new ActiveDataProvider([
+					'query' => Equipment::find()->where(['type' => $_GET['equipment_id']])->andWhere(['section' => 0]),
+				]);
+				$title = $this->findModel($_GET['equipment_id'])->name;
+			}
+			else {
+				$dataProvider = new ActiveDataProvider([
+					'query' => Equipment::find()->where(['section' => 0]),
+				]);
+			}
+			
+				
+				if (Yii::$app->request->isAjax) {
+					return $this->renderAjax('storagesetcat', [
+						'dataProvider'  => $dataProvider,
+						'arSections' 	=> $model->get_tree( $arSections, 0 ),
+						'storeName' 	=> $storeName,
+						'storeID' 		=> $storeID,
+						'arConsist' 	=> $arConsist,
+					]);
+				}
+				else {
+					return $this->renderPartial('storagesetcat', [
+						'dataProvider'	=> $dataProvider,
+						'arSections' 	=> $model->get_tree( $arSections, 0 ),
+						'storeName' 	=> $storeName,
+						'storeID' 		=> $storeID,
+						'arConsist' 	=> $arConsist,
+					]);
+				}
+			
+		}
+		else {
+				$dataProvider = new ActiveDataProvider([
+					'query' => Equipment::find()->where(['section' => 0]),
+				]);
+			return $this->render('error_storage', [
+					'dataProvider' => $dataProvider
+			]);
+		
+		}
+    }
+	
+	
+	
+	public function actionStorage_edit($storage_id, $equipment_id, $section)
+    {
+        //$model = $this->findModel($id);
+		$model = StorageConsist::findOne(['storage_id' => $storage_id, 'equipment_id' => $equipment_id]);
+
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+			if ( $section ){
+				return $this->redirect(['storage', 'id' => $storage_id, 'equipment_id' => $section]);
+			}
+			else {
+				return $this->redirect(['storage', 'id' => $storage_id]);
+			}
+        } else {
+
+			return $this->renderPartial('storage_edit',array('model'=>$model, 'storage_id' => $storage_id), false, true);
+            
+        }
+    }
 
     /**
      * Creates a new Equipment model.
@@ -92,7 +339,11 @@ class EquipmentController extends Controller
     {
         $model = new Equipment();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+		if ($model->load(Yii::$app->request->post())) {
+			if ( !$model->sort ){
+				$model->sort = 100;
+			}
+			$model->save();
             return $this->redirect(['view', 'id' => $model->equipment_id]);
         } else {
             return $this->render('create', [

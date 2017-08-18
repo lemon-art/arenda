@@ -77,7 +77,7 @@ class Dropdown extends Widget
             unset($this->submenuOptions['id']);
         }
         parent::init();
-        Html::addCssClass($this->options, ['widget' => 'dropdown-menu']);
+        Html::addCssClass($this->options, ['widget' => 'nav-dropdown-items']);
     }
 
     /**

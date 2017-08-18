@@ -72,7 +72,7 @@ class Equipment extends \yii\db\ActiveRecord
     {
         return [
             [['name', 'type', 'section'], 'required'],
-            [['type', 'arenda', 'price', 'section'], 'integer'],
+            [['type', 'arenda', 'price', 'section', 'sort', 'weight'], 'integer'],
             [['name'], 'string', 'max' => 255],
         ];
     }
@@ -89,6 +89,8 @@ class Equipment extends \yii\db\ActiveRecord
             'arenda' => 'Стоимость аренды в сутки',
             'price' => 'Стоимость товара',
             'section' => '',
+			'sort'	=> 'Сортировка',
+			'weight' => 'Вес'
         ];
     }
 }

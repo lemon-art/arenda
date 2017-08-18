@@ -15,12 +15,17 @@ use yii\widgets\ActiveForm;
     <?php $form = ActiveForm::begin(); ?>
 
     <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
+	
+	<?= $form->field($model, 'sort')->textInput() ?> 
 
 	<?= $form->field($model, 'type')->dropDownList($model->GetDropdownSections());?>
 
     <?= $form->field($model, 'arenda')->textInput() ?>
 
     <?= $form->field($model, 'price')->textInput() ?>  
+	
+	<?= $form->field($model, 'weight')->textInput() ?>
+	
 
 
     <div class="form-group">
